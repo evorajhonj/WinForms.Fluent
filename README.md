@@ -1,285 +1,323 @@
 # Evora.FluentForms
 
-> Modern Fluent Design System for Windows Forms - Apply Mica, Acrylic, and backdrop effects with ease
+> Bring Windows 11 Fluent Design to your WinForms applications with just one line of code
 
-[![.NET](https://img.shields.io/badge/.NET-6.0+-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-8.0+-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Windows](https://img.shields.io/badge/Windows-11+-0078D4?logo=windows)](https://www.microsoft.com/windows)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![NuGet](https://img.shields.io/nuget/v/Evora.FluentForms.svg)](https://www.nuget.org/packages/Evora.FluentForms/)
+
+A modern .NET library that brings Windows 11 Fluent Design System effects to WinForms applications. Apply **Mica**, **Acrylic**, and **Tabbed Window** backdrop materials with automatic theme detection and a clean, intuitive API.
 
 ---
 
 ## 📚 Table of Contents
 
-- [Features](#-features)
-- [Installation](#-installation)
-- [Quick Start](#-quick-start)
-- [Complete API Reference](#-complete-api-reference)
-- [Step-by-Step Guide](#-step-by-step-guide)
-- [Usage Examples](#-usage-examples)
-- [Advanced Topics](#-advanced-topics)
-- [Troubleshooting](#-troubleshooting)
-- [Requirements](#-requirements)
-- [Migration Guide](#-migration-from-libmaterial-v1x)
-- [FAQ](#-frequently-asked-questions)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [✨ Features](#-features)
+- [🎯 Why Evora.FluentForms?](#-why-evorafluentforms)
+- [📦 Installation](#-installation)
+- [🚀 Quick Start](#-quick-start)
+- [🎨 Choosing Your Backdrop Style](#-choosing-your-backdrop-style)
+- [📖 Core Concepts](#-core-concepts)
+- [🎨 API Reference](#-api-reference)
+- [💡 Usage Examples](#-usage-examples)
+- [🔧 Advanced Usage](#-advanced-usage)
+- [🐛 Troubleshooting](#-troubleshooting)
+- [❓ FAQ](#-faq)
+- [📋 Requirements](#-requirements)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
 ---
 
 ## ✨ Features
 
-- 🎨 **Fluent Design Effects** - Mica, Acrylic, and Tabbed Window backdrop support
+- 🎨 **Three Backdrop Effects** - Mica, Acrylic, and Tabbed Window materials
 - 🌓 **Automatic Theme Detection** - Seamless light/dark mode switching
-- 🚀 **Simple API** - One-line setup with `Fluent.ApplyMica(this)`
-- 🔧 **Extension Methods** - Intuitive Form extensions
+- 🚀 **One-Line Setup** - `Fluent.ApplyMica(this)` - that's it!
+- 🔧 **Extension Methods** - Fluent API with intuitive method chaining
+- 🎯 **Windows Accent Colors** - Access and use system accent colors
 - 📦 **Zero Dependencies** - Pure Win32 DWM API integration
-- ⚡ **Windows 11 Native** - Full DwmSetWindowAttribute support
-- 🎯 **Beginner Friendly** - Easy to learn and use
-- 📖 **Well Documented** - Comprehensive guides and examples
+- ⚡ **Windows 11 Native** - Full `DwmSetWindowAttribute` support
+- 🎓 **Beginner Friendly** - Clear documentation and examples
+
+---
+
+## 🎯 Why Evora.FluentForms?
+
+Evora.FluentForms makes it incredibly easy to give your WinForms applications a modern Windows 11 look:
+
+**Without Evora.FluentForms:**
+```csharp
+// Complex P/Invoke declarations
+[DllImport("dwmapi.dll")]
+static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+
+// Manual backdrop setup
+int backdropType = 2; // What does 2 mean?
+DwmSetWindowAttribute(this.Handle, 38, ref backdropType, sizeof(int));
+
+// Manual theme detection from registry
+var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+bool isDark = (int)key.GetValue("AppsUseLightTheme") == 0;
+
+// Apply colors manually
+this.BackColor = isDark ? Color.FromArgb(32, 32, 32) : Color.FromArgb(243, 243, 243);
+```
+
+**With Evora.FluentForms:**
+```csharp
+using Evora.FluentForms;
+
+public MyForm()
+{
+    InitializeComponent();
+    Fluent.ApplyMica(this);  // Done! ✨
+}
+```
 
 ---
 
 ## 📦 Installation
 
-### Option 1: .NET CLI (Recommended)
+### Using .NET CLI (Recommended)
 
 ```bash
 dotnet add package Evora.FluentForms
 ```
 
-### Option 2: NuGet Package Manager
+### Using NuGet Package Manager
 
 ```powershell
 Install-Package Evora.FluentForms
 ```
 
-### Option 3: Visual Studio
+### Using Visual Studio
 
-1. Right-click on your project → **Manage NuGet Packages**
-2. Search for `Evora.FluentForms`
+1. Right-click your project → **Manage NuGet Packages**
+2. Search for **Evora.FluentForms**
 3. Click **Install**
 
 ---
 
 ## 🚀 Quick Start
 
-### Your First Fluent Form (30 seconds)
+### Your First Fluent Form (3 Steps)
 
-1. **Add the using directive:**
-
+**Step 1:** Add the using directive
 ```csharp
 using Evora.FluentForms;
 ```
 
-2. **Apply Mica effect in your Form constructor:**
-
+**Step 2:** Apply Mica effect in your form constructor
 ```csharp
 public partial class MainForm : Form
 {
     public MainForm()
     {
-     InitializeComponent();
-        Fluent.ApplyMica(this);  // That's it!
+ InitializeComponent();
+   Fluent.ApplyMica(this);  // ✨ That's it!
     }
 }
 ```
 
-3. **Handle theme changes (recommended):**
-
+**Step 3:** Handle system theme changes (recommended)
 ```csharp
 protected override void OnSystemColorsChanged(EventArgs e)
 {
     base.OnSystemColorsChanged(e);
-    this.UpdateTheme();
+    this.UpdateTheme();  // Auto-update when Windows theme changes
 }
 ```
 
-**Done!** Run your application and see the beautiful Mica effect! 🎉
+**Run your app** and enjoy the beautiful Mica effect! 🎉
 
 ---
 
-## 📖 Complete API Reference
+## 🎨 Choosing Your Backdrop Style
 
-### 1. Fluent Class (Static Methods)
+Evora.FluentForms offers **three backdrop styles**. Choose the one that fits your window type:
 
-The `Fluent` class provides simple static methods for quick setup.
+### 1️⃣ Mica (Recommended for Main Windows)
+
+```csharp
+// Using static method
+Fluent.ApplyMica(this);
+
+// OR using extension method
+this.ApplyAuto();  // Defaults to Mica
+```
+
+**Best for:** Main application windows, long-lived UI
+**Visual:** Subtle, opaque texture with desktop wallpaper tinting
+**Performance:** Excellent ⚡
+
+---
+
+### 2️⃣ Acrylic (For Dialogs & Popups)
+
+```csharp
+// Using static method
+Fluent.ApplyAcrylic(this);
+
+// OR using extension method with explicit type
+this.ApplyAuto(LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_TRANSIENTWINDOW);
+```
+
+**Best for:** Settings dialogs, popups, flyouts, temporary windows
+**Visual:** Blurred, semi-transparent with more translucency
+**Performance:** Good 👍
+
+---
+
+### 3️⃣ Tabbed Window (For Multi-Tab Interfaces)
+
+```csharp
+// Using static method
+Fluent.ApplyTabbedWindow(this);
+
+// OR using extension method with explicit type
+this.ApplyAuto(LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_TABBEDWINDOW);
+```
+
+**Best for:** Applications with TabControl, multi-document interfaces
+**Visual:** Optimized backdrop for tabbed layouts
+**Performance:** Excellent ⚡
+
+---
+
+### Quick Comparison
+
+| Style | Method | When to Use |
+|-------|--------|-------------|
+| **Mica** | `Fluent.ApplyMica(this)` | Main windows that stay open |
+| **Acrylic** | `Fluent.ApplyAcrylic(this)` | Temporary windows, dialogs |
+| **Tabbed** | `Fluent.ApplyTabbedWindow(this)` | Windows with tabs |
+
+---
+
+## 📖 Core Concepts
+
+### What are Backdrop Effects?
+
+Backdrop effects are translucent materials that blend your window with the desktop background, creating depth and visual hierarchy.
+
+| Effect | Best For | Visual Style | Performance |
+|--------|----------|--------------|-------------|
+| **Mica** | Main windows, long-lived UI | Subtle, opaque texture | Excellent ⚡ |
+| **Acrylic** | Dialogs, popups, flyouts | Blurred, translucent | Good 👍 |
+| **Tabbed** | Multi-tab interfaces | Optimized for tabs | Excellent ⚡ |
+
+### Theme Detection
+
+Evora.FluentForms automatically detects Windows theme (light/dark mode) and applies appropriate colors:
+
+```csharp
+// Check current theme
+if (Fluent.IsDarkMode())
+{
+    // Windows is in dark mode
+}
+
+if (Fluent.IsLightMode())
+{
+    // Windows is in light mode
+}
+```
+
+### How It Works
+
+1. **Backdrop Material** - Applied via DWM (Desktop Window Manager)
+2. **Theme Detection** - Reads from Windows Registry
+3. **Transparency** - Sets form `TransparencyKey` for effect visibility
+4. **Auto-Update** - Responds to `OnSystemColorsChanged` events
+
+---
+
+## 🎨 API Reference
+
+### Fluent Static Class
+
+The main entry point with simple static methods:
 
 #### Apply Effects
 
-| Method | Description | When to Use |
-|--------|-------------|-------------|
-| `Fluent.ApplyMica(form)` | Applies Mica backdrop effect | Main windows, long-lived windows |
-| `Fluent.ApplyAcrylic(form)` | Applies Acrylic backdrop effect | Dialogs, popups, transient windows |
-| `Fluent.ApplyTabbedWindow(form)` | Applies tabbed window effect | Windows with tab controls |
-| `Fluent.RemoveEffects(form)` | Removes all effects | When you need to disable effects |
-
-**Example:**
 ```csharp
-// Apply Mica to main window
-Fluent.ApplyMica(this);
+// Apply Mica effect (for main windows)
+Fluent.ApplyMica(form);
 
-// Apply Acrylic to dialog
-Fluent.ApplyAcrylic(myDialog);
+// Apply Acrylic effect (for dialogs)
+Fluent.ApplyAcrylic(form);
+
+// Apply Tabbed Window effect
+Fluent.ApplyTabbedWindow(form);
 
 // Remove all effects
-Fluent.RemoveEffects(this);
+Fluent.RemoveEffects(form);
 ```
 
 #### Theme Detection
 
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `Fluent.IsDarkMode()` | `bool` | Returns `true` if Windows is in dark mode |
-| `Fluent.IsLightMode()` | `bool` | Returns `true` if Windows is in light mode |
-
-**Example:**
 ```csharp
-if (Fluent.IsDarkMode())
-{
-    // Apply dark theme customizations
-  this.ForeColor = Color.White;
-}
-else
-{
-    // Apply light theme customizations
-    this.ForeColor = Color.Black;
-}
+// Check Windows theme
+bool isDark = Fluent.IsDarkMode();
+bool isLight = Fluent.IsLightMode();
 ```
 
 #### Color Utilities
 
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `Fluent.GetAccentColor()` | `Color` | Gets Windows accent color |
-| `Fluent.GetColorizationColor()` | `Color` | Gets Windows colorization color |
-
-**Example:**
 ```csharp
+// Get Windows accent color
 Color accent = Fluent.GetAccentColor();
-myButton.BackColor = accent;  // Match Windows accent color
+
+// Get Windows colorization color
+Color colorization = Fluent.GetColorizationColor();
 ```
 
 ---
 
-### 2. Extension Methods
+### Extension Methods
 
-Extension methods provide a fluent API directly on Form objects.
+Fluent API for Form objects:
 
 #### Apply Effects
 
-| Method | Description | Parameters |
-|--------|-------------|------------|
-| `form.ApplyAuto()` | Applies all effects with auto theme | `backdropType` (optional) |
-| `form.ApplyMicaEffect()` | Applies backdrop effect only | `backdropType` (optional) |
-| `form.ApplyTheme(bool)` | Applies light/dark theme | `useDarkMode` |
-| `form.ApplyTransparency(bool)` | Applies transparent background | `useDarkMode` |
-| `form.UpdateTheme()` | Updates theme from system | None |
-
-**Example:**
 ```csharp
-// Automatic - easiest way
+// Apply all effects automatically (Mica + Theme + Transparency)
 this.ApplyAuto();
 
-// Manual control
+// Apply specific backdrop (Mica, Acrylic, or Tabbed)
 this.ApplyMicaEffect();
-this.ApplyTheme(true);  // Dark mode
-this.ApplyTransparency(true);
+this.ApplyMicaEffect(LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_TRANSIENTWINDOW); // Acrylic
 
-// Update when system theme changes
+// Apply theme manually
+this.ApplyTheme(useDarkMode: true);
+
+// Apply transparency
+this.ApplyTransparency(useDarkMode: true);
+
+// Update theme from current system settings
 this.UpdateTheme();
 ```
 
 #### Remove Effects
 
-| Method | Description |
-|--------|-------------|
-| `form.RemoveAuto()` | Removes all effects |
-| `form.RemoveMicaEffect()` | Removes backdrop only |
-| `form.RemoveTransparency()` | Removes transparency only |
-
-**Example:**
 ```csharp
-// Remove everything
+// Remove all effects
 this.RemoveAuto();
 
-// Remove selectively
+// Remove specific effects
 this.RemoveMicaEffect();
 this.RemoveTransparency();
 ```
 
 ---
 
-## 🎓 Step-by-Step Guide
-
-### Step 1: Create a New WinForms Project
-
-```bash
-dotnet new winforms -n MyFluentApp
-cd MyFluentApp
-```
-
-### Step 2: Install Evora.FluentForms
-
-```bash
-dotnet add package Evora.FluentForms
-```
-
-### Step 3: Open Form1.cs and Add Using
-
-```csharp
-using Evora.FluentForms;  // Add this line
-```
-
-### Step 4: Apply Mica Effect
-
-```csharp
-public partial class Form1 : Form
-{
-    public Form1()
-    {
-        InitializeComponent();
-        
-        // Add this line
-        Fluent.ApplyMica(this);
-    }
-}
-```
-
-### Step 5: Handle Theme Changes
-
-```csharp
-public partial class Form1 : Form
-{
-    public Form1()
-    {
-        InitializeComponent();
-      Fluent.ApplyMica(this);
-    }
-    
-    // Add this method
-    protected override void OnSystemColorsChanged(EventArgs e)
-    {
-        base.OnSystemColorsChanged(e);
-        this.UpdateTheme();
-    }
-}
-```
-
-### Step 6: Run Your App
-
-```bash
-dotnet run
-```
-
-**Congratulations!** 🎉 You now have a beautiful Fluent Design window!
-
----
-
-## 🎯 Usage Examples
+## 💡 Usage Examples
 
 ### Example 1: Basic Mica Window
 
-The simplest way to add Mica effect to your main window.
+Perfect for main application windows.
 
 ```csharp
 using Evora.FluentForms;
@@ -288,28 +326,25 @@ public class MainWindow : Form
 {
     public MainWindow()
     {
-        InitializeComponent();
- 
-        // Apply Mica effect
+    InitializeComponent();
+     
+        // Apply Mica effect with auto theme detection
         Fluent.ApplyMica(this);
     }
     
-    // Update theme when Windows theme changes
     protected override void OnSystemColorsChanged(EventArgs e)
     {
-      base.OnSystemColorsChanged(e);
-        this.UpdateTheme();
+        base.OnSystemColorsChanged(e);
+    this.UpdateTheme();
     }
 }
 ```
-
-**When to use:** Main application windows that stay open for a long time.
 
 ---
 
 ### Example 2: Acrylic Dialog
 
-Perfect for dialogs, popups, and temporary windows.
+Ideal for settings dialogs, popups, and temporary windows.
 
 ```csharp
 using Evora.FluentForms;
@@ -319,295 +354,374 @@ public class SettingsDialog : Form
     public SettingsDialog()
     {
         InitializeComponent();
-        
-        // Apply Acrylic effect (lighter, more transparent)
-     Fluent.ApplyAcrylic(this);
- }
+    
+        // Acrylic provides more transparency
+ Fluent.ApplyAcrylic(this);
+    }
     
     protected override void OnSystemColorsChanged(EventArgs e)
     {
-        base.OnSystemColorsChanged(e);
+base.OnSystemColorsChanged(e);
         this.UpdateTheme();
     }
 }
 ```
 
-**When to use:** Dialogs, settings windows, popups, message boxes.
-
 ---
 
-### Example 3: Extension Methods
+### Example 3: Tabbed Window
 
-Using the fluent API for more control.
+Optimized for applications with tab controls.
 
 ```csharp
 using Evora.FluentForms;
 
-public class MyForm : Form
+public class TabbedWindow : Form
 {
-    public MyForm()
+    private TabControl tabControl;
+    
+    public TabbedWindow()
     {
         InitializeComponent();
         
-        // Apply all effects automatically
+        // Setup tabs
+        tabControl = new TabControl { Dock = DockStyle.Fill };
+        this.Controls.Add(tabControl);
+
+        // Apply tabbed window effect
+      Fluent.ApplyTabbedWindow(this);
+    }
+  
+    protected override void OnSystemColorsChanged(EventArgs e)
+    {
+     base.OnSystemColorsChanged(e);
+        this.UpdateTheme();
+    }
+}
+```
+
+---
+
+### Example 4: Switching Backdrop Styles Dynamically
+
+Change backdrop effect at runtime based on window state.
+
+```csharp
+using Evora.FluentForms;
+
+public class DynamicBackdropForm : Form
+{
+    private ComboBox cmbBackdropStyle;
+    
+  public DynamicBackdropForm()
+  {
+   InitializeComponent();
+        
+        // Setup dropdown
+        cmbBackdropStyle = new ComboBox
+  {
+  DropDownStyle = ComboBoxStyle.DropDownList,
+     Location = new Point(20, 20),
+Width = 200
+        };
+  cmbBackdropStyle.Items.AddRange(new[] { "Mica", "Acrylic", "Tabbed", "None" });
+        cmbBackdropStyle.SelectedIndex = 0;
+        cmbBackdropStyle.SelectedIndexChanged += OnBackdropChanged;
+        this.Controls.Add(cmbBackdropStyle);
+        
+        // Apply initial effect
+  Fluent.ApplyMica(this);
+    }
+    
+    private void OnBackdropChanged(object sender, EventArgs e)
+    {
+        switch (cmbBackdropStyle.SelectedItem?.ToString())
+        {
+            case "Mica":
+       Fluent.ApplyMica(this);
+      break;
+  case "Acrylic":
+                Fluent.ApplyAcrylic(this);
+        break;
+   case "Tabbed":
+  Fluent.ApplyTabbedWindow(this);
+         break;
+     case "None":
+              Fluent.RemoveEffects(this);
+        break;
+      }
+    }
+    
+    protected override void OnSystemColorsChanged(EventArgs e)
+    {
+        base.OnSystemColorsChanged(e);
+        if (cmbBackdropStyle.SelectedItem?.ToString() != "None")
+        {
+   this.UpdateTheme();
+    }
+    }
+}
+```
+
+---
+
+### Example 5: Using Extension Methods
+
+More control with fluent API.
+
+```csharp
+using Evora.FluentForms;
+
+public class CustomForm : Form
+{
+    public CustomForm()
+    {
+        InitializeComponent();
+        
+        // Option 1: Auto (easiest) - defaults to Mica
         this.ApplyAuto();
-   
-        // Or apply individually:
+
+        // Option 2: Specify backdrop type with extension method
+     // this.ApplyAuto(LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_TRANSIENTWINDOW);  // Acrylic
+        // this.ApplyAuto(LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_TABBEDWINDOW); // Tabbed
+        
+        // Option 3: Manual control
   // this.ApplyMicaEffect();
-        // this.ApplyTheme(Fluent.IsDarkMode());
+  // this.ApplyTheme(Fluent.IsDarkMode());
         // this.ApplyTransparency(Fluent.IsDarkMode());
     }
-    
+ 
     protected override void OnSystemColorsChanged(EventArgs e)
     {
         base.OnSystemColorsChanged(e);
-        this.UpdateTheme();
+    this.UpdateTheme();
     }
 }
 ```
 
-**When to use:** When you want a fluent API style or need more control.
-
 ---
 
-### Example 4: Manual Theme Control
+### Example 6: Manual Theme Toggle
 
-Full control over dark/light theme with a toggle button.
-
-```csharp
-using Evora.FluentForms;
-
-public class CustomThemeForm : Form
-{
-    private bool _isDarkMode = true;
-    private Button btnToggleTheme;
-    
- public CustomThemeForm()
- {
-        InitializeComponent();
-     
-  // Setup toggle button
-        btnToggleTheme = new Button { Text = "Toggle Theme" };
-        btnToggleTheme.Click += (s, e) => ToggleTheme();
-     this.Controls.Add(btnToggleTheme);
-        
-    // Apply initial theme
-        ApplyCustomTheme();
-    }
-    
-    private void ApplyCustomTheme()
-    {
-        this.ApplyMicaEffect();
-      this.ApplyTheme(_isDarkMode);
-        this.ApplyTransparency(_isDarkMode);
-        
-        // Custom styling based on theme
-        if (_isDarkMode)
-   {
-            btnToggleTheme.Text = "☀️ Light Mode";
-        }
-        else
-        {
-            btnToggleTheme.Text = "🌙 Dark Mode";
-        }
-    }
-    
-    private void ToggleTheme()
-    {
-        _isDarkMode = !_isDarkMode;
-      ApplyCustomTheme();
-    }
-}
-```
-
-**When to use:** Apps with manual theme switching, custom theme logic.
-
----
-
-### Example 5: Detecting Windows Theme
-
-React to Windows theme and customize your UI accordingly.
+Add a dark/light mode switch.
 
 ```csharp
 using Evora.FluentForms;
 
 public class ThemedForm : Form
 {
+    private bool _isDarkMode = true;
+    private Button btnToggle;
+    
     public ThemedForm()
     {
-    InitializeComponent();
- 
-        // Check Windows theme
-    if (Fluent.IsDarkMode())
-        {
-            ApplyDarkCustomizations();
-        }
-        else
-      {
-            ApplyLightCustomizations();
-   }
+        InitializeComponent();
         
-        // Apply Mica effect
-      this.ApplyAuto();
-}
-    
-    private void ApplyDarkCustomizations()
-    {
- this.BackColor = Color.FromArgb(32, 32, 32);
-        this.ForeColor = Color.White;
-   // Add more dark theme customizations
+   // Setup toggle button
+      btnToggle = new Button 
+  { 
+            Text = "☀️ Light Mode",
+ Location = new Point(20, 20)
+        };
+        btnToggle.Click += (s, e) => ToggleTheme();
+        this.Controls.Add(btnToggle);
+        
+ // Apply initial theme
+        ApplyCustomTheme();
+    Fluent.ApplyMica(this);
     }
     
-    private void ApplyLightCustomizations()
+    private void ApplyCustomTheme()
     {
-        this.BackColor = Color.FromArgb(243, 243, 243);
-  this.ForeColor = Color.Black;
-        // Add more light theme customizations
+        this.ApplyMicaEffect();
+        this.ApplyTheme(_isDarkMode);
+        this.ApplyTransparency(_isDarkMode);
+   
+        btnToggle.Text = _isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
     }
     
-    protected override void OnSystemColorsChanged(EventArgs e)
+    private void ToggleTheme()
     {
-        base.OnSystemColorsChanged(e);
-        
-   // Reapply customizations when theme changes
-        if (Fluent.IsDarkMode())
-        {
-ApplyDarkCustomizations();
-        }
-  else
-        {
-     ApplyLightCustomizations();
-        }
-    
-        this.UpdateTheme();
+        _isDarkMode = !_isDarkMode;
+     ApplyCustomTheme();
     }
 }
 ```
 
-**When to use:** Apps that need to match Windows theme with custom styling.
-
 ---
 
-### Example 6: Using Windows Accent Colors
+### Example 7: Using Windows Accent Color
 
-Match Windows accent color for a cohesive look.
+Match your app's colors with Windows accent color.
 
 ```csharp
 using Evora.FluentForms;
 
 public class AccentColorForm : Form
 {
-    private Panel accentPanel;
+    private Panel headerPanel;
     private Button accentButton;
     
     public AccentColorForm()
-    {
-      InitializeComponent();
-   
-        // Create controls with accent color
- accentPanel = new Panel
-        {
-            BackColor = Fluent.GetAccentColor(),
-            Dock = DockStyle.Top,
- Height = 50
-        };
-        
-        accentButton = new Button
   {
-            Text = "Accent Button",
-        BackColor = Fluent.GetAccentColor(),
-  ForeColor = Color.White,
- FlatStyle = FlatStyle.Flat
+   InitializeComponent();
+  
+        // Get Windows accent color
+        Color accent = Fluent.GetAccentColor();
+        
+        // Apply to header
+     headerPanel = new Panel
+  {
+         BackColor = accent,
+            Dock = DockStyle.Top,
+Height = 60
         };
         
-   this.Controls.Add(accentPanel);
-        this.Controls.Add(accentButton);
-  
- // Apply Mica
-        Fluent.ApplyMica(this);
+        // Apply to button
+        accentButton = new Button
+   {
+         Text = "Action Button",
+      BackColor = accent,
+   ForeColor = Color.White,
+            FlatStyle = FlatStyle.Flat
+        };
+     
+        this.Controls.Add(headerPanel);
+  this.Controls.Add(accentButton);
+        
+    Fluent.ApplyMica(this);
     }
     
     protected override void OnSystemColorsChanged(EventArgs e)
     {
-        base.OnSystemColorsChanged(e);
-        
-        // Update accent colors when they change
+   base.OnSystemColorsChanged(e);
+   
+        // Update accent color when it changes
         Color newAccent = Fluent.GetAccentColor();
-        accentPanel.BackColor = newAccent;
-        accentButton.BackColor = newAccent;
-        
+        headerPanel.BackColor = newAccent;
+      accentButton.BackColor = newAccent;
+      
         this.UpdateTheme();
     }
 }
 ```
 
-**When to use:** Apps that want to match Windows accent color for branding consistency.
-
 ---
 
-### Example 7: Removing Effects Dynamically
+### Example 8: Dynamic Effect Toggle
 
-Add or remove effects at runtime.
+Enable/disable effects at runtime.
 
 ```csharp
 using Evora.FluentForms;
 
-public class DynamicEffectsForm : Form
+public class DynamicForm : Form
 {
-    private CheckBox chkEnableEffects;
+    private CheckBox chkEffects;
     
-    public DynamicEffectsForm()
+    public DynamicForm()
     {
-        InitializeComponent();
+    InitializeComponent();
         
-        // Create checkbox
- chkEnableEffects = new CheckBox
+        chkEffects = new CheckBox
         {
-       Text = "Enable Fluent Effects",
-            Checked = true,
-            Location = new Point(20, 20)
+            Text = "Enable Fluent Effects",
+   Checked = true,
+          Location = new Point(20, 20)
         };
-        chkEnableEffects.CheckedChanged += ChkEnableEffects_CheckedChanged;
-   this.Controls.Add(chkEnableEffects);
+        chkEffects.CheckedChanged += OnEffectsToggle;
+        this.Controls.Add(chkEffects);
         
-    // Initially enabled
- Fluent.ApplyMica(this);
+        Fluent.ApplyMica(this);
     }
     
-    private void ChkEnableEffects_CheckedChanged(object sender, EventArgs e)
+    private void OnEffectsToggle(object sender, EventArgs e)
     {
-        if (chkEnableEffects.Checked)
-{
-            // Enable effects
-            Fluent.ApplyMica(this);
+        if (chkEffects.Checked)
+    {
+   Fluent.ApplyMica(this);
         }
         else
- {
-    // Disable effects
-      Fluent.RemoveEffects(this);
-        }
+{
+            Fluent.RemoveEffects(this);
+   }
     }
     
-  protected override void OnSystemColorsChanged(EventArgs e)
+    protected override void OnSystemColorsChanged(EventArgs e)
     {
-      base.OnSystemColorsChanged(e);
-        if (chkEnableEffects.Checked)
-        {
-            this.UpdateTheme();
+        base.OnSystemColorsChanged(e);
+        if (chkEffects.Checked)
+  {
+        this.UpdateTheme();
         }
     }
 }
 ```
 
-**When to use:** Apps that let users toggle effects, or need to enable/disable effects dynamically.
+---
+
+### Example 9: Adapting to Windows Theme
+
+Customize your UI based on Windows theme.
+
+```csharp
+using Evora.FluentForms;
+
+public class AdaptiveForm : Form
+{
+    private Label titleLabel;
+    
+    public AdaptiveForm()
+    {
+        InitializeComponent();
+        
+        titleLabel = new Label
+        {
+     Text = "Adaptive Theme Example",
+            AutoSize = true,
+   Location = new Point(20, 20),
+     Font = new Font("Segoe UI", 16, FontStyle.Bold)
+        };
+   this.Controls.Add(titleLabel);
+     
+        ApplyThemeCustomization();
+    Fluent.ApplyMica(this);
+    }
+    
+    private void ApplyThemeCustomization()
+    {
+   if (Fluent.IsDarkMode())
+        {
+ // Dark mode customization
+      this.ForeColor = Color.White;
+    titleLabel.ForeColor = Color.White;
+            // Add more dark theme styling
+   }
+        else
+ {
+     // Light mode customization
+ this.ForeColor = Color.Black;
+     titleLabel.ForeColor = Color.Black;
+            // Add more light theme styling
+        }
+    }
+    
+    protected override void OnSystemColorsChanged(EventArgs e)
+    {
+      base.OnSystemColorsChanged(e);
+        ApplyThemeCustomization();
+        this.UpdateTheme();
+    }
+}
+```
 
 ---
 
-## 🔬 Advanced Topics
+## 🔧 Advanced Usage
 
-### Using Low-Level APIs
+### Low-Level API Access
 
-For advanced scenarios, you can use the low-level APIs directly.
+For advanced scenarios, you can use the underlying APIs directly:
 
 ```csharp
 using Evora.FluentForms;
@@ -617,104 +731,272 @@ public class AdvancedForm : Form
     public AdvancedForm()
     {
         InitializeComponent();
-    
-        // Low-level API for maximum control
- bool isDarkMode = !LibRegistry.GetAppUseLightTheme();
+     
+     // Direct access to low-level methods
+        bool isDarkMode = !LibRegistry.GetAppUseLightTheme();
         
-        LibApply.Apply_Backdrop_Effect(
-            this.Handle,
-       LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_MAINWINDOW
+ LibApply.Apply_Backdrop_Effect(
+     this.Handle,
+            LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_MAINWINDOW
         );
         
-    LibApply.Apply_Light_Theme(this.Handle, isDarkMode);
-     LibApply.Apply_Transparent_Form(this.Handle, isDarkMode);
+  LibApply.Apply_Light_Theme(this.Handle, isDarkMode);
+        LibApply.Apply_Transparent_Form(this.Handle, isDarkMode);
     }
 }
 ```
 
-### Backdrop Types Explained
+### Available Backdrop Types
 
-| Type | Constant | Description | Best For |
-|------|----------|-------------|----------|
-| **Mica** | `DWMSBT_MAINWINDOW` | Solid, performance-optimized | Main windows |
-| **Acrylic** | `DWMSBT_TRANSIENTWINDOW` | Semi-transparent, blurred | Dialogs, popups |
-| **Tabbed** | `DWMSBT_TABBEDWINDOW` | Optimized for tabs | Tabbed interfaces |
-| **None** | `DWMSBT_NONE` | No effect | Disable effects |
-| **Auto** | `DWMSBT_AUTO` | System decides | Let Windows choose |
-
-### Custom Backdrop Type
+All available backdrop styles and when to use them:
 
 ```csharp
-// Apply specific backdrop type
-this.ApplyAuto(LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_TRANSIENTWINDOW);
+// Option 1: Auto - Let Windows decide (generally chooses Mica-like effect)
+LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_AUTO
 
-// Or
+// Option 2: None - Disable all backdrop effects
+LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_NONE
+
+// Option 3: Mica - Main window backdrop (recommended for most apps)
+LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_MAINWINDOW
+
+// Option 4: Acrylic - Transient window backdrop (for dialogs, popups)
+LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_TRANSIENTWINDOW
+
+// Option 5: Tabbed - Tabbed window backdrop (for tab interfaces)
+LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_TABBEDWINDOW
+```
+
+**Usage with extension methods:**
+```csharp
+// Apply Mica (MainWindow style)
+this.ApplyMicaEffect(LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_MAINWINDOW);
+
+// Apply Acrylic (TransientWindow style)
+this.ApplyMicaEffect(LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_TRANSIENTWINDOW);
+
+// Apply Tabbed style
 this.ApplyMicaEffect(LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_TABBEDWINDOW);
+
+// Or use simplified methods
+this.ApplyAuto();  // Defaults to DWMSBT_MAINWINDOW (Mica)
+this.ApplyAuto(LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_TRANSIENTWINDOW);  // Acrylic
+```
+
+### Comparison of Backdrop Styles
+
+| Backdrop Type | Constant | Visual Effect | Transparency | Best Use Case |
+|---------------|----------|---------------|--------------|---------------|
+| **Mica** | `DWMSBT_MAINWINDOW` | Subtle wallpaper tint | Low (opaque) | Main windows, primary UI |
+| **Acrylic** | `DWMSBT_TRANSIENTWINDOW` | Blurred background | High (translucent) | Dialogs, context menus, overlays |
+| **Tabbed** | `DWMSBT_TABBEDWINDOW` | Optimized for tabs | Low (opaque) | Multi-tab applications, browsers |
+| **Auto** | `DWMSBT_AUTO` | Windows decides | Varies | Let system choose appropriate style |
+| **None** | `DWMSBT_NONE` | No effect | None | Disable backdrop materials |
+
+**Visual Differences:**
+- **Mica**: Adapts to desktop wallpaper, creates sense of depth
+- **Acrylic**: Shows blurred content behind window, more "glass-like"
+- **Tabbed**: Similar to Mica but optimized for tabbed interfaces
+
+---
+
+### Registry Access
+
+```csharp
+// Theme detection
+bool appUsesLight = LibRegistry.GetAppUseLightTheme();
+bool systemUsesLight = LibRegistry.GetSysUseLightTheme();
+
+// Colors
+Color accent = LibRegistry.GetAccentColor();
+Color colorization = LibRegistry.GetColorizationColor();
+Color afterglow = LibRegistry.GetColorizationAfterglow();
+
+// Color history
+Color[] recentColors = LibRegistry.GetHistoryColors();
+```
+
+### Symbol Utilities (Bonus)
+
+Generate icon bitmaps from font symbols:
+
+```csharp
+using Evora.FluentForms;
+
+// Create bitmap from Segoe MDL2 Assets symbol
+Font iconFont = new Font("Segoe MDL2 Assets", 24);
+Bitmap icon = LibSymbol.GetSymbolBitmap(0xE710, iconFont, Brushes.White);
+
+// Or from string
+Bitmap iconFromString = LibSymbol.GetSymbolBitmap("🌙", new Font("Segoe UI Emoji", 24), Brushes.White);
 ```
 
 ---
 
 ## 🐛 Troubleshooting
 
-### Issue: Effects not showing
+### Effects Not Showing
 
-**Possible causes:**
-1. Not running on Windows 11
-2. Effects applied before window handle created
-3. Windows settings disabled transparency
+**Symptom:** Backdrop effect doesn't appear.
 
-**Solution:**
-```csharp
-public MyForm()
-{
-    InitializeComponent();  // Call this FIRST
-    
-    // Then apply effects (handle must be created)
-    Fluent.ApplyMica(this);
-}
-```
+**Causes & Solutions:**
 
-### Issue: Theme not updating
+1. **Not on Windows 11**
+   - Effects require Windows 11 (Build 22000+)
+   - Check: `Settings > System > About > Windows specifications`
 
-**Problem:** Theme doesn't change when Windows theme changes.
+2. **Applied Before Handle Created**
+   ```csharp
+   // ❌ Wrong
+   public MyForm()
+   {
+       Fluent.ApplyMica(this);  // Handle not created yet!
+    InitializeComponent();
+   }
+   
+   // ✅ Correct
+   public MyForm()
+   {
+       InitializeComponent();   // Create handle first
+       Fluent.ApplyMica(this);
+   }
+   ```
 
-**Solution:** Always override `OnSystemColorsChanged`:
+3. **Transparency Disabled in Windows**
+   - Go to `Settings > Personalization > Colors`
+   - Enable "Transparency effects"
+
+---
+
+### Theme Not Updating
+
+**Symptom:** App doesn't switch themes when Windows theme changes.
+
+**Solution:** Override `OnSystemColorsChanged`:
+
 ```csharp
 protected override void OnSystemColorsChanged(EventArgs e)
 {
-    base.OnSystemColorsChanged(e);  // Don't forget base call
+    base.OnSystemColorsChanged(e);  // ⚠️ Don't forget this!
     this.UpdateTheme();
 }
 ```
 
-### Issue: Window looks wrong in dark mode
+---
 
-**Problem:** Text or controls not visible in dark mode.
+### Text/Controls Not Visible
 
-**Solution:** Set `ForeColor` and customize controls:
+**Symptom:** Controls disappear in dark mode.
+
+**Solution:** Set appropriate `ForeColor`:
+
 ```csharp
 if (Fluent.IsDarkMode())
 {
     this.ForeColor = Color.White;
-    // Customize other controls
+    // Style controls for dark theme
+}
+else
+{
+  this.ForeColor = Color.Black;
+    // Style controls for light theme
 }
 ```
 
-### Issue: Performance problems
+---
 
-**Problem:** Mica effect causes performance issues.
+### Performance Issues
 
-**Solution:** Use Acrylic or remove effects on low-end systems:
-```csharp
-try
-{
-    Fluent.ApplyMica(this);
-}
-catch
-{
-    // Fallback to no effects on error
-}
+**Symptom:** Lag or performance degradation.
+
+**Solutions:**
+
+1. **Use Mica instead of Acrylic** (Mica is more performant)
+2. **Remove effects on low-end systems:**
+   ```csharp
+   try
+   {
+       Fluent.ApplyMica(this);
+   }
+   catch
+   {
+       // Gracefully degrade to no effects
+   }
+   ```
+
+---
+
+## ❓ FAQ
+
+### Does this work on Windows 10?
+
+**Short answer:** The library runs on Windows 10, but effects only work on Windows 11.
+
+**Details:** Mica and Acrylic backdrop materials are Windows 11 features. On Windows 10, the API calls will be ignored, and your app will function normally without the visual effects. Theme detection and color utilities work on both Windows 10 and 11.
+
+---
+
+### Do I need external dependencies?
+
+**No!** Evora.FluentForms has zero dependencies. It uses only Win32 APIs built into Windows via P/Invoke.
+
+---
+
+### Can I use this in WPF or other UI frameworks?
+
+Currently, Evora.FluentForms is designed for **Windows Forms only**. For WPF, you can use:
+- Native WPF backdrop support (Windows 11)
+- Community libraries like `Wpf.Ui`
+
+---
+
+### Will this affect performance?
+
+**Minimal impact.** Backdrop effects are GPU-accelerated by Windows DWM:
+- **Mica**: Excellent performance (recommended for main windows)
+- **Acrylic**: Good performance (slight blur overhead)
+- **Tabbed**: Excellent performance
+
+---
+
+### Can I customize blur amount or opacity?
+
+No. Backdrop materials are standardized by Windows and cannot be customized. This ensures consistency across all Windows 11 apps. However, you can:
+- Choose different backdrop types (Mica, Acrylic, Tabbed)
+- Layer your own controls with semi-transparent backgrounds
+
+---
+
+### Is automatic theme detection reliable?
+
+**Yes!** Theme detection reads directly from Windows Registry:
 ```
+HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\AppsUseLightTheme
+```
+
+It's the same method Windows uses internally.
+
+---
+
+### Can I use this commercially?
+
+**Yes!** Evora.FluentForms is MIT licensed. You can use it in:
+- Personal projects
+- Open-source projects
+- Commercial applications
+- Proprietary software
+
+No attribution required (but appreciated! ⭐)
+
+---
+
+### How do I contribute?
+
+See the [Contributing](#-contributing) section below. We welcome:
+- Bug reports
+- Feature requests
+- Documentation improvements
+- Code contributions
 
 ---
 
@@ -722,134 +1004,47 @@ catch
 
 ### Minimum Requirements
 
-- **Operating System:** Windows 11 (22000 or higher)
-- **Framework:** .NET 6.0 or higher
-- **Application Type:** Windows Forms (WinForms)
-- **Visual Studio:** 2022 or later (recommended)
+| Requirement | Version |
+|------------|---------|
+| **Operating System** | Windows 11 (Build 22000+) |
+| **.NET Version** | .NET 8.0 or higher |
+| **Framework** | Windows Forms |
+| **Visual Studio** | 2022 or later (recommended) |
 
-### Compatibility Notes
+### Feature Compatibility
 
 | Feature | Windows 11 | Windows 10 | Older |
 |---------|------------|------------|-------|
 | Mica Effect | ✅ Full | ❌ No | ❌ No |
 | Acrylic Effect | ✅ Full | ❌ No | ❌ No |
+| Tabbed Effect | ✅ Full | ❌ No | ❌ No |
 | Theme Detection | ✅ Yes | ✅ Yes | ⚠️ Partial |
 | Accent Colors | ✅ Yes | ✅ Yes | ✅ Yes |
 
-> **Note:** On Windows 10 and older, effects will gracefully fail and your app will still work, just without the backdrop effects.
-
----
-
-## 🔄 Migration from LibMaterial v1.x
-
-### Quick Migration (2 minutes)
-
-**Step 1:** Update namespace
-```csharp
-// Old
-using LibMaterial;
-
-// New
-using Evora.FluentForms;
-```
-
-**Step 2:** Update class name
-```csharp
-// Old
-Material.ApplyMica(this);
-
-// New
-Fluent.ApplyMica(this);
-```
-
-**Step 3:** Update extension method (optional)
-```csharp
-// Old
-this.ApplyMaterial();
-
-// New
-this.ApplyAuto();
-```
-
-### Complete Migration Table
-
-| Old (LibMaterial) | New (Evora.FluentForms) |
-|-------------------|------------------------|
-| `Material.ApplyMica()` | `Fluent.ApplyMica()` |
-| `Material.ApplyAcrylic()` | `Fluent.ApplyAcrylic()` |
-| `Material.IsDarkMode()` | `Fluent.IsDarkMode()` |
-| `Material.GetAccentColor()` | `Fluent.GetAccentColor()` |
-| `this.ApplyMaterial()` | `this.ApplyAuto()` |
-| `this.RemoveMaterial()` | `this.RemoveAuto()` |
-
-### Backward Compatibility
-
-The original low-level APIs are still available:
-```csharp
-// These still work in v2.0+
-LibApply.Apply_Backdrop_Effect(handle, type);
-LibRegistry.GetAppUseLightTheme();
-LibImport.DwmSystemBackdropTypeFlgs.DWMSBT_MAINWINDOW
-```
-
----
-
-## ❓ Frequently Asked Questions
-
-### Q: Does this work on Windows 10?
-
-**A:** The library works on Windows 10, but Mica and Acrylic effects require Windows 11. On Windows 10, the effects will be ignored, and your app will still function normally.
-
-### Q: Do I need to install any dependencies?
-
-**A:** No! Evora.FluentForms has zero dependencies. It uses only Win32 APIs built into Windows.
-
-### Q: Can I use this in WPF or other frameworks?
-
-**A:** Currently, Evora.FluentForms is designed specifically for Windows Forms. For WPF, consider using native WPF backdrop support.
-
-### Q: Will this affect my app's performance?
-
-**A:** Mica and Acrylic effects are GPU-accelerated by Windows, so impact is minimal. Mica is more performant than Acrylic.
-
-### Q: Can I customize the blur amount or transparency?
-
-**A:** The effects are controlled by Windows DWM and cannot be customized. However, you can use `TransparencyKey` for additional effects.
-
-### Q: Does this work with dark/light theme automatically?
-
-**A:** Yes! Use `this.UpdateTheme()` in `OnSystemColorsChanged` to automatically update when Windows theme changes.
-
-### Q: Can I use this in commercial applications?
-
-**A:** Yes! Evora.FluentForms is MIT licensed, so you can use it in commercial projects for free.
-
-### Q: How do I contribute or report bugs?
-
-**A:** Visit our [GitHub repository](https://github.com/famliars/LibMaterial) to report issues or submit pull requests.
+> **Note:** On Windows 10 and older, backdrop effects will be gracefully ignored. Your application will still work, just without the visual materials.
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Here's how you can help:
+We welcome contributions from the community! Here's how you can help:
 
 ### Ways to Contribute
 
-- 🐛 **Report Bugs** - Found a bug? [Open an issue](https://github.com/famliars/LibMaterial/issues)
-- ✨ **Suggest Features** - Have an idea? We'd love to hear it!
-- 📖 **Improve Documentation** - Help make our docs even better
-- 🔧 **Submit Pull Requests** - Fix bugs or add features
-- 💬 **Share Your Projects** - Show us what you've built!
+- 🐛 **Report Bugs** - [Open an issue](https://github.com/evorajhonj/Evora.FluentForms/issues)
+- 💡 **Suggest Features** - Share your ideas
+- 📖 **Improve Docs** - Help make documentation clearer
+- 🔧 **Submit PRs** - Fix bugs or add features
+- ⭐ **Star the Repo** - Show your support!
 
 ### Development Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/famliars/LibMaterial.git
+git clone https://github.com/evorajhonj/Evora.FluentForms.git
 
 # Navigate to directory
-cd LibMaterial/Evora.FluentForms
+cd Evora.FluentForms
 
 # Restore dependencies
 dotnet restore
@@ -857,15 +1052,25 @@ dotnet restore
 # Build
 dotnet build
 
-# Run tests (if available)
-dotnet test
+# Pack (create NuGet package)
+dotnet pack
 ```
+
+### Contribution Guidelines
+
+1. **Fork the repository**
+2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Commit your changes** (`git commit -m 'Add amazing feature'`)
+4. **Push to branch** (`git push origin feature/amazing-feature`)
+5. **Open a Pull Request**
 
 ---
 
 ## 📄 License
 
-**MIT License** - Copyright (c) 2023-2024 Evora
+**MIT License**
+
+Copyright (c) 2025 Evora
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -875,41 +1080,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ---
 
-## 🙏 Credits
+## 🙏 Acknowledgments
 
-This project is based on the original [LibMaterial](https://github.com/Simple-2021/LibMaterial) by Simple-2021.
+Built with ❤️ for the Windows Forms community.
 
-Enhanced, rebranded, and modernized as **Evora.FluentForms** with:
-
-- 🎨 Simplified API design
-- 📖 Comprehensive documentation
-- 🚀 Modern naming conventions
-- 🔧 Extension method support
-- 🎓 Beginner-friendly approach
-- ✨ Improved developer experience
+Special thanks to:
+- Microsoft for the Windows 11 Fluent Design System
+- The .NET and WinForms teams
+- All contributors and users
 
 ---
 
-## 📞 Support
+## 📞 Support & Resources
 
-- 📧 **Issues:** [GitHub Issues](https://github.com/famliars/LibMaterial/issues)
-- 📖 **Documentation:** You're reading it!
-- 💬 **Discussions:** [GitHub Discussions](https://github.com/famliars/LibMaterial/discussions)
-
----
-
-## ⭐ Star This Project
-
-If you find Evora.FluentForms useful, please give it a star on GitHub! ⭐
-
-It helps others discover the project and motivates us to keep improving it.
-
-[⭐ Star on GitHub](https://github.com/famliars/LibMaterial)
+- 📧 **Issues**: [GitHub Issues](https://github.com/evorajhonj/Evora.FluentForms/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/evorajhonj/Evora.FluentForms/discussions)
+- 📦 **NuGet**: [Evora.FluentForms](https://www.nuget.org/packages/Evora.FluentForms/)
+- 📚 **Source Code**: [GitHub Repository](https://github.com/evorajhonj/Evora.FluentForms)
 
 ---
 
-## 🎉 Thank You!
+## ⭐ Show Your Support
 
-Thank you for using Evora.FluentForms! We hope it makes your Windows Forms applications more beautiful and modern.
+If you find Evora.FluentForms useful, please:
 
-**Made with ❤️ for the Windows Forms community**
+- ⭐ **Star the repository** on GitHub
+- 📢 **Share with others** who might benefit
+- 🐦 **Tweet about it** with `#EvoraFluentForms`
+- 💬 **Provide feedback** to help us improve
+
+[⭐ Star on GitHub](https://github.com/evorajhonj/Evora.FluentForms)
+
+---
+
+**Made with ❤️ for modern Windows Forms development**

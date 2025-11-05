@@ -12,36 +12,77 @@ namespace WinForms.Fluent
     {
         public const bool Dark = true;
         public const bool Light = false;
+        
     }
 
-    // ============ TIER 1: SIMPLE PRESET EXTENSIONS ============
+    // ============ APPLICATION TARGET ============
+    public enum Target
+    {
+        TitleBar,       // Apply only to titlebar
+        FullWindow      // Apply to entire window
+    }
+
+    // ============ SIMPLE PRESET EXTENSIONS ============
     public static class FluentExtensions
     {
-        // Apply Mica effect - Auto-detects system theme
+        // Apply Mica effect - Auto-detects system theme (full window)
         public static void Mica(this Form form)
         {
-            bool isDark = FluentRegistry.GetAppUseLightTheme();
+            bool isDark = !FluentRegistry.GetAppUseLightTheme();
             FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_MAINWINDOW);
             FluentApply.Apply_Light_Theme(form.Handle, isDark);
+            FluentApply.Apply_Transparent_Form(form.Handle, isDark);
         }
 
-        // Apply Mica effect with explicit theme - Use Theme.Dark or Theme.Light
+        // Apply Mica effect with explicit theme - Use Theme.Dark or Theme.Light (full window)
         public static void Mica(this Form form, bool dark)
         {
             FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_MAINWINDOW);
             FluentApply.Apply_Light_Theme(form.Handle, dark);
+            FluentApply.Apply_Transparent_Form(form.Handle, dark);
         }
 
-        // Apply Acrylic effect - Auto-detects system theme
+        // Apply Mica effect with target
+        public static void Mica(this Form form, Target target)
+        {
+            bool isDark = !FluentRegistry.GetAppUseLightTheme();
+            if (target == Target.TitleBar)
+            {
+                FluentApply.Apply_Light_Theme(form.Handle, isDark);
+            }
+            else
+            {
+                FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_MAINWINDOW);
+                FluentApply.Apply_Light_Theme(form.Handle, isDark);
+                FluentApply.Apply_Transparent_Form(form.Handle, isDark);
+            }
+        }
+
+        // Apply Mica effect with explicit theme and target
+        public static void Mica(this Form form, bool dark, Target target)
+        {
+            if (target == Target.TitleBar)
+            {
+                FluentApply.Apply_Light_Theme(form.Handle, dark);
+            }
+            else
+            {
+                FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_MAINWINDOW);
+                FluentApply.Apply_Light_Theme(form.Handle, dark);
+                FluentApply.Apply_Transparent_Form(form.Handle, dark);
+            }
+        }
+
+        // Apply Acrylic effect - Auto-detects system theme (full window)
         public static void Acrylic(this Form form)
         {
-            bool isDark = FluentRegistry.GetAppUseLightTheme();
+            bool isDark = !FluentRegistry.GetAppUseLightTheme();
             FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_TRANSIENTWINDOW);
             FluentApply.Apply_Light_Theme(form.Handle, isDark);
             FluentApply.Apply_Transparent_Form(form.Handle, isDark);
         }
 
-        // Apply Acrylic effect with explicit theme - Use Theme.Dark or Theme.Light
+        // Apply Acrylic effect with explicit theme - Use Theme.Dark or Theme.Light (full window)
         public static void Acrylic(this Form form, bool dark)
         {
             FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_TRANSIENTWINDOW);
@@ -49,25 +90,89 @@ namespace WinForms.Fluent
             FluentApply.Apply_Transparent_Form(form.Handle, dark);
         }
 
-        // Apply Tabbed effect - Auto-detects system theme
-        public static void Tabbed(this Form form)
+        // Apply Acrylic effect with target
+        public static void Acrylic(this Form form, Target target)
         {
-            bool isDark = FluentRegistry.GetAppUseLightTheme();
-            FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_TABBEDWINDOW);
-            FluentApply.Apply_Light_Theme(form.Handle, isDark);
+            bool isDark = !FluentRegistry.GetAppUseLightTheme();
+            if (target == Target.TitleBar)
+            {
+                FluentApply.Apply_Light_Theme(form.Handle, isDark);
+            }
+            else
+            {
+                FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_TRANSIENTWINDOW);
+                FluentApply.Apply_Light_Theme(form.Handle, isDark);
+                FluentApply.Apply_Transparent_Form(form.Handle, isDark);
+            }
         }
 
-        // Apply Tabbed effect with explicit theme - Use Theme.Dark or Theme.Light
+        // Apply Acrylic effect with explicit theme and target
+        public static void Acrylic(this Form form, bool dark, Target target)
+        {
+            if (target == Target.TitleBar)
+            {
+                FluentApply.Apply_Light_Theme(form.Handle, dark);
+            }
+            else
+            {
+                FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_TRANSIENTWINDOW);
+                FluentApply.Apply_Light_Theme(form.Handle, dark);
+                FluentApply.Apply_Transparent_Form(form.Handle, dark);
+            }
+        }
+
+        // Apply Tabbed effect - Auto-detects system theme (full window)
+        public static void Tabbed(this Form form)
+        {
+            bool isDark = !FluentRegistry.GetAppUseLightTheme();
+            FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_TABBEDWINDOW);
+            FluentApply.Apply_Light_Theme(form.Handle, isDark);
+            FluentApply.Apply_Transparent_Form(form.Handle, isDark);
+        }
+
+        // Apply Tabbed effect with explicit theme - Use Theme.Dark or Theme.Light (full window)
         public static void Tabbed(this Form form, bool dark)
         {
             FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_TABBEDWINDOW);
             FluentApply.Apply_Light_Theme(form.Handle, dark);
+            FluentApply.Apply_Transparent_Form(form.Handle, dark);
         }
 
-        // Auto-detect system theme and apply Mica
+        // Apply Tabbed effect with target
+        public static void Tabbed(this Form form, Target target)
+        {
+            bool isDark = !FluentRegistry.GetAppUseLightTheme();
+            if (target == Target.TitleBar)
+            {
+                FluentApply.Apply_Light_Theme(form.Handle, isDark);
+            }
+            else
+            {
+                FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_TABBEDWINDOW);
+                FluentApply.Apply_Light_Theme(form.Handle, isDark);
+                FluentApply.Apply_Transparent_Form(form.Handle, isDark);
+            }
+        }
+
+        // Apply Tabbed effect with explicit theme and target
+        public static void Tabbed(this Form form, bool dark, Target target)
+        {
+            if (target == Target.TitleBar)
+            {
+                FluentApply.Apply_Light_Theme(form.Handle, dark);
+            }
+            else
+            {
+                FluentApply.Apply_Backdrop_Effect(form.Handle, DWMSBT_TABBEDWINDOW);
+                FluentApply.Apply_Light_Theme(form.Handle, dark);
+                FluentApply.Apply_Transparent_Form(form.Handle, dark);
+            }
+        }
+
+        // Auto-detect system theme and apply Mica (full window)
         public static void Auto(this Form form)
         {
-            bool isDark = FluentRegistry.GetAppUseLightTheme();
+            bool isDark = !FluentRegistry.GetAppUseLightTheme();  // ? FIX: Invert logic
             form.Mica(isDark);
         }
 
@@ -78,11 +183,11 @@ namespace WinForms.Fluent
             FluentApply.Cancel_Transparent_Form(form.Handle);
         }
 
-        // Entry point for configuration (Tier 2 & 3)
+        // Entry point for configuration
         public static FluentConfig Configure(this Form form) => new(form);
     }
 
-    // ============ TIER 2: FLUENT CONFIG ============
+    // ============ FLUENT CONFIG ============
     public class FluentConfig
     {
         private readonly Form _form;
@@ -90,6 +195,7 @@ namespace WinForms.Fluent
         private bool _isDark = true;
         private bool _transparencyEnabled = false;
         private bool _backdropEnabled = true;
+        private Target _applyTarget = Target.FullWindow;
 
         public FluentConfig(Form form)
         {
@@ -142,7 +248,7 @@ namespace WinForms.Fluent
         // Auto-detect system theme
         public FluentConfig Auto()
         {
-            _isDark = FluentRegistry.GetAppUseLightTheme();
+            _isDark = !FluentRegistry.GetAppUseLightTheme();  // ? FIX: Invert logic
             return this;
         }
 
@@ -157,6 +263,22 @@ namespace WinForms.Fluent
         public FluentConfig Light()
         {
             _isDark = false;
+            return this;
+        }
+
+        // ========== TARGET METHODS ==========
+
+        // Apply only to titlebar
+        public FluentConfig ToTitleBar()
+        {
+            _applyTarget = Target.TitleBar;
+            return this;
+        }
+
+        // Apply to full window
+        public FluentConfig ToFullWindow()
+        {
+            _applyTarget = Target.FullWindow;
             return this;
         }
 
@@ -189,24 +311,33 @@ namespace WinForms.Fluent
         // Internal apply implementation
         private void ApplyInternal()
         {
-            if (_backdropEnabled)
+            if (_applyTarget == Target.TitleBar)
             {
-                FluentApply.Apply_Backdrop_Effect(_form.Handle, _backdropEffect);
+                // Only apply theme to titlebar
+                FluentApply.Apply_Light_Theme(_form.Handle, _isDark);
             }
             else
             {
-                FluentApply.Cancel_Backdrop_Effect(_form.Handle);
-            }
+                // Apply full window effects
+                if (_backdropEnabled)
+                {
+                    FluentApply.Apply_Backdrop_Effect(_form.Handle, _backdropEffect);
+                }
+                else
+                {
+                    FluentApply.Cancel_Backdrop_Effect(_form.Handle);
+                }
 
-            FluentApply.Apply_Light_Theme(_form.Handle, _isDark);
+                FluentApply.Apply_Light_Theme(_form.Handle, _isDark);
 
-            if (_transparencyEnabled)
-            {
-                FluentApply.Apply_Transparent_Form(_form.Handle, _isDark);
-            }
-            else
-            {
-                FluentApply.Cancel_Transparent_Form(_form.Handle);
+                if (_transparencyEnabled)
+                {
+                    FluentApply.Apply_Transparent_Form(_form.Handle, _isDark);
+                }
+                else
+                {
+                    FluentApply.Cancel_Transparent_Form(_form.Handle);
+                }
             }
         }
     }

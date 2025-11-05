@@ -21,7 +21,8 @@
 
 - 🎯 **One-Line API** - `this.Mica()` applies effects instantly
 - 🌓 **Auto Theme Detection** - Automatically detects Windows dark/light mode
-- 🎨 **Multiple Effects** - Mica, Acrylic, Tabbed, and more
+- 🎨 **Multiple Effects** - Mica, Acrylic, Tabbed with full-window support
+- 🎯 **Apply Target Control** - Choose titlebar-only or full-window effects
 - ⚙️ **Chainable Configuration** - Fluent API for complex scenarios
 - 🔒 **Type-Safe** - Full IntelliSense, no magic strings
 - 📱 **Multi-Target** - .NET 6, 7, 8, 9 (Windows only)
@@ -48,7 +49,7 @@ public partial class MainWindow : Form
     public MainWindow()
     {
         InitializeComponent();
-        this.Mica();  // ← That's it! Auto-detects theme
+        this.Mica();  // ← That's it! Auto-detects theme + full window
     }
 }
 ```
@@ -62,15 +63,24 @@ public partial class MainWindow : Form
 Perfect for **99% of use cases**:
 
 ```csharp
-// Auto-detect system theme + apply effect
+// Auto-detect system theme + apply effect (full window)
 this.Mica();                    // Windows 11 Mica effect
 this.Acrylic();                 // Transparent Acrylic
 this.Tabbed();                  // Tabbed window effect
 this.Auto();                    // Same as Mica()
 
-// Force specific theme
+// Force specific theme (full window)
 this.Mica(Theme.Dark);          // Dark Mica
 this.Acrylic(Theme.Light);      // Light Acrylic
+this.Tabbed(Theme.Dark);        // Dark Tabbed
+
+// Apply target control (titlebar only or full window)
+this.Mica(Target.TitleBar);     // Titlebar only
+this.Mica(Target.FullWindow);   // Full window
+
+// With theme + target
+this.Mica(Theme.Dark, Target.FullWindow);
+this.Acrylic(Theme.Light, Target.TitleBar);
 
 // Cleanup
 this.Reset();                   // Remove all effects
@@ -82,7 +92,7 @@ public MainWindow()
 {
     InitializeComponent();
     
-    // Modern app - auto theme detection
+    // Modern app - auto theme detection, full window
     this.Mica();
 }
 ```
@@ -104,16 +114,18 @@ this.Configure()
 **More Examples:**
 
 ```csharp
-// Light Mica
+// Light Mica, full window
 this.Configure()
     .Mica()
     .Light()
+    .ToFullWindow()
     .Apply();
 
-// Tabbed with auto theme
+// Tabbed with auto theme, titlebar only
 this.Configure()
     .Tabbed()
     .Auto()
+    .ToTitleBar()
     .Apply();
 
 // Dark, no backdrop
@@ -122,11 +134,12 @@ this.Configure()
     .Dark()
     .Apply();
 
-// Acrylic dialog
+// Acrylic dialog with transparency
 this.Configure()
     .Acrylic()
     .Auto()
     .Transparency()
+    .ToFullWindow()
     .Apply();
 ```
 
@@ -136,16 +149,19 @@ this.Configure()
 
 ### Simple Methods
 
-| Method | Effect | Theme |
-|--------|--------|-------|
-| `this.Mica()` | Mica | Auto-detect |
-| `this.Mica(Theme.Dark)` | Mica | Dark |
-| `this.Mica(Theme.Light)` | Mica | Light |
-| `this.Acrylic()` | Acrylic | Auto-detect |
-| `this.Acrylic(Theme.Dark)` | Acrylic | Dark |
-| `this.Tabbed()` | Tabbed | Auto-detect |
-| `this.Auto()` | Mica | Auto-detect |
-| `this.Reset()` | None | - |
+| Method | Effect | Theme | Target |
+|--------|--------|-------|--------|
+| `this.Mica()` | Mica | Auto-detect | Full Window |
+| `this.Mica(Theme.Dark)` | Mica | Dark | Full Window |
+| `this.Mica(Theme.Light)` | Mica | Light | Full Window |
+| `this.Mica(Target.TitleBar)` | Mica | Auto-detect | TitleBar |
+| `this.Mica(Theme.Dark, Target.FullWindow)` | Mica | Dark | Full Window |
+| `this.Acrylic()` | Acrylic | Auto-detect | Full Window |
+| `this.Acrylic(Theme.Dark)` | Acrylic | Dark | Full Window |
+| `this.Tabbed()` | Tabbed | Auto-detect | Full Window |
+| `this.Tabbed(Theme.Light)` | Tabbed | Light | Full Window |
+| `this.Auto()` | Mica | Auto-detect | Full Window |
+| `this.Reset()` | None | - | - |
 
 ### Configuration Methods
 
@@ -165,10 +181,16 @@ this.Configure()
 .Light()             // Force light theme
 ```
 
+**Apply Target:**
+```csharp
+.ToTitleBar()        // Apply only to titlebar
+.ToFullWindow()      // Apply to entire window (default)
+```
+
 **Transparency:**
 ```csharp
 .Transparency()      // Enable transparency
-.NoTransparency()    // Disable transparency
+.NoTransparency()    // Disable transparency (default)
 ```
 
 **Apply:**
@@ -194,200 +216,26 @@ this.Mica(Theme.Light);         // No ambiguity
 
 ---
 
-## 💡 Common Use Cases
+## 🎯 Apply Target Enum
 
-### 1️⃣ Modern App (Most Common)
 ```csharp
-public MainWindow()
-{
-    InitializeComponent();
-    this.Mica();  // Auto-detects theme, done!
-}
-```
+using WinForms.Fluent;
 
-### 2️⃣ Transparent Dialog
-```csharp
-public SettingsDialog()
-{
-    InitializeComponent();
-    
-    this.Configure()
-        .Acrylic()
-        .Auto()
-        .Transparency()
-        .Apply();
-}
-```
+// Apply only to titlebar (theme only)
+this.Mica(Target.TitleBar);
 
-### 3️⃣ Dark Splash Screen
-```csharp
-public SplashScreen()
-{
-    InitializeComponent();
-    this.Mica(Theme.Dark);  // Always dark
-}
-```
+// Apply to full window (backdrop + theme)
+this.Mica(Target.FullWindow);   // Default
 
-### 4️⃣ Tabbed Application
-```csharp
-public MainWindow()
-{
-    InitializeComponent();
-    
-    this.Configure()
-        .Tabbed()
-        .Auto()
-        .Apply();
-}
-```
-
-### 5️⃣ Respond to System Theme Changes
-```csharp
-private void Form_SystemColorsChanged(object sender, EventArgs e)
-{
-    // Re-apply with new system theme
-    this.Configure()
-        .Mica()
-        .Auto()
-        .Apply();
-}
-```
-
----
-
-## 🎯 Effect Guide
-
-| Effect | Best For | Transparency | Notes |
-|--------|----------|--------------|-------|
-| **Mica** | Main windows, primary UI | No | Default choice for most apps |
-| **Acrylic** | Dialogs, menus, temporary windows | Yes | More subtle than Mica |
-| **Tabbed** | Tabbed interfaces, multi-doc apps | No | Optimized for tabbed UI |
-| **Auto** | Let DWM decide | Varies | Good fallback |
-
----
-
-## 🔄 Application Patterns
-
-### Pattern 1: Immediate Application (Most Common)
-```csharp
-// Auto-applies when transparency method called
+// In configuration
 this.Configure()
     .Mica()
     .Dark()
-    .Transparency();    // ✅ Applies automatically
-```
-
-### Pattern 2: Explicit Application
-```csharp
-// Manual Apply() for full control
-this.Configure()
-    .Mica()
-    .Dark()
-    .Apply();          // ✅ Explicit apply
-```
-
-### Pattern 3: Build & Reuse
-```csharp
-// Build config, apply/modify multiple times
-var config = this.Configure().Mica().Dark();
-
-config.Apply();                    // Apply
-config.Transparency().Apply();     // Modify & apply
-config.Light().Apply();            // Change & apply again
-```
-
----
-
-## 🎓 Learning Path
-
-1. **Start** → Use one-liners (`this.Mica()`)
-2. **Add Theme** → Try `Theme.Dark` / `Theme.Light`
-3. **Explore** → Experiment with `.Configure()` chaining
-4. **Master** → Mix patterns for your use case
-
----
-
-## 📋 Supported Frameworks
-
-| Framework | Version | Status |
-|-----------|---------|--------|
-| .NET Framework | 4.8 | ✅ Supported |
-| .NET | 6.0 (LTS) | ✅ Supported |
-| .NET | 7.0 | ✅ Supported |
-| .NET | 8.0 (LTS) | ✅ Supported |
-| .NET | 9.0 | ✅ Supported |
-
-**Note:** Windows only (uses Windows 11 Fluent Design APIs)
-
----
-
-## 🏗️ Architecture
-
-```
-WinForms.Fluent
-├── FluentExtensions      ← Simple one-liner methods
-├── FluentConfig          ← Chainable configuration
-├── FluentApply           ← Core effect application
-├── FluentRegistry        ← System theme detection
-├── FluentImport          ← Windows API bindings
-└── FluentSymbol          ← Icon/symbol utilities
-```
-
----
-
-## 🤝 Contributing
-
-Found a bug or have a feature request? 
-
-- 📧 [Issues](https://github.com/evorajhonj/WinForms.Fluent/issues)
-- 💬 [Discussions](https://github.com/evorajhonj/WinForms.Fluent/discussions)
-- 🔗 [Pull Requests](https://github.com/evorajhonj/WinForms.Fluent/pulls)
-
----
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) for details
-
----
-
-## 🔗 Links
-
-- **GitHub**: [https://github.com/evorajhonj/WinForms.Fluent](https://github.com/evorajhonj/WinForms.Fluent)
-- **NuGet**: [https://www.nuget.org/packages/WinForms.Fluent](https://www.nuget.org/packages/WinForms.Fluent)
-
----
-
-## 🎯 Quick Reference Card
-
-```csharp
-// ⚡ Instant Effects
-this.Mica();                        // Modern Mica
-this.Acrylic();                     // Transparent Acrylic
-this.Tabbed();                      // Tabbed UI
-this.Auto();                        // Auto everything
-this.Reset();                       // Remove effects
-
-// 🎨 With Theme Control
-this.Mica(Theme.Dark);              // Dark Mica
-this.Acrylic(Theme.Light);          // Light Acrylic
-this.Tabbed(Theme.Dark);            // Dark Tabbed
-
-// ⚙️ Advanced Chaining
-this.Configure()
-    .Acrylic()
-    .Dark()
-    .Transparency()
+    .ToTitleBar()      // Titlebar only
     .Apply();
 
-// 🔄 Reusable Config
-var cfg = this.Configure().Mica().Light();
-cfg.Apply();
-cfg.Transparency().Apply();
-```
-
----
-
-<p align="center">
-  Made with ❤️ for WinForms developers
-</p>
+this.Configure()
+    .Acrylic()
+    .Auto()
+    .ToFullWindow()    // Full window (default)
+    .Apply();
